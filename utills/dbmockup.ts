@@ -1,3 +1,5 @@
+import { CreateTrainPayload } from "./types";
+
 export const train1: CreateTrainPayload = {
   trainExpressName: "Some train name",
   countryOfOrigin: "Example country",
