@@ -65,7 +65,6 @@ trainRouter
       const trainDbData: TrainPayload[] = JSON.parse(trainsDbFile);
 
       //find a train and update array
-
       const updatedDbTrainsArray = trainDbData.map((train) => {
         if (train.id === idToUpdate) {
           // update drain if has matched id
@@ -88,8 +87,46 @@ trainRouter
       const updatedTrainIdNumber = Number(idToUpdate) - 1;
 
       res.status(200).json({
-        message: "Train saved",
+        message: "Train updated",
         train: updatedDbTrainsArray[updatedTrainIdNumber],
+      });
+    } catch (e) {
+      res.status(500).json({ message: "Something wrong, sorry" });
+    }
+  })
+
+  .delete("/trains/:id", async (req, res) => {
+    try {
+      const idToDelete = req.params.id;
+      let deletedItem = null;
+
+      //take train db
+      const trainsDbFile = await fsPromises.readFile(trainDbPath, "utf-8");
+
+      //parse to readable data array
+      const trainDbData: TrainPayload[] = JSON.parse(trainsDbFile);
+
+      //find a train and delete it, return new array and deleted train
+
+      const updatedDbTrainsArray = trainDbData.filter((train) => {
+        if (train.id !== idToDelete) {
+          return true; // eturning true for elements witch are not deleted
+        } else {
+          deletedItem = train; // assigns an train to a variable
+          return false; // returning false for elements witch are deletet
+        }
+      });
+
+      // save updated db
+      await fsPromises.writeFile(
+        trainDbPath,
+        JSON.stringify(updatedDbTrainsArray),
+        "utf-8"
+      );
+
+      res.status(200).json({
+        message: "Train deleted",
+        train: deletedItem,
       });
     } catch (e) {
       res.status(500).json({ message: "Something wrong, sorry" });
