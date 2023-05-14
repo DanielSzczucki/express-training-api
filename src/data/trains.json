@@ -88,5 +88,32 @@
     "maxKilometerPerHour": "60",
     "destinationFrom": "Moscow",
     "destinationTo": "Vladivostok"
+  },
+  {
+    "id": "11",
+    "trainExpressName": "Some train name",
+    "countryOfOrigin": "Example country",
+    "yearOfConstruction": "2137",
+    "maxKilometerPerHour": "320",
+    "destinationFrom": "Earth",
+    "destinationTo": "Moon"
+  },
+  {
+    "id": "12",
+    "trainExpressName": "Some train name",
+    "countryOfOrigin": "Example country",
+    "yearOfConstruction": "2137",
+    "maxKilometerPerHour": "320",
+    "destinationFrom": "Earth",
+    "destinationTo": "Moon"
+  },
+  {
+    "id": "13",
+    "trainExpressName": "Some train name",
+    "countryOfOrigin": "Example country",
+    "yearOfConstruction": "2137",
+    "maxKilometerPerHour": "320",
+    "destinationFrom": "Earth",
+    "destinationTo": "Moon"
   }
 ]
