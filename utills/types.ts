@@ -1,4 +1,4 @@
-interface CreateTrainPayload {
+export interface CreateTrainPayload {
   trainExpressName: string;
   countryOfOrigin: string;
   yearOfConstruction: string;
@@ -7,6 +7,6 @@ interface CreateTrainPayload {
   destinationTo: string;
 }
 
-interface TrainPayload extends CreateTrainPayload {
+export interface TrainPayload extends CreateTrainPayload {
   id: string;
 }
