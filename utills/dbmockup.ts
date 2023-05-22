@@ -19,5 +19,3 @@ export const train2: CreateTrainPayload = {
 };
 
 export const trainsArray: CreateTrainPayload[] = [train1, train2];
-
-export const trainDbPath = "./src/data/trains.json";
