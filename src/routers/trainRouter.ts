@@ -2,6 +2,7 @@ import express from "express";
 import { promises as fsPromises } from "fs";
 import { trainDbPath } from "../../utills/dbmockup";
 import { TrainPayload } from "../../utills/types";
+import { takeDbFromFile } from "../../utills/train.services";
 
 export const trainRouter = express.Router();
 
@@ -11,24 +12,21 @@ trainRouter
 
     try {
       //take train db
-      const trainsDbFile = await fsPromises.readFile(trainDbPath, "utf-8");
-
-      //parse to readable data array
-      const trainDbData: TrainPayload[] = JSON.parse(trainsDbFile);
+      const trainsDb = await takeDbFromFile(trainDbPath);
 
       //add id to train
       const updatedTrain: TrainPayload = {
-        id: `${trainDbData.length + 1}`,
+        id: `${trainsDb.length + 1}`,
         ...newTrain,
       };
 
       //add new train to array
-      trainDbData.push(updatedTrain);
+      trainsDb.push(updatedTrain);
 
       // save updated db
       await fsPromises.writeFile(
         trainDbPath,
-        JSON.stringify(trainDbData),
+        JSON.stringify(trainsDb),
         "utf-8"
       );
 
@@ -41,14 +39,11 @@ trainRouter
   .get("/trains", async (req, res) => {
     try {
       //take train db
-      const trainsDbFile = await fsPromises.readFile(trainDbPath, "utf-8");
-
-      //parse to readable data array
-      const trainDbData: TrainPayload[] = JSON.parse(trainsDbFile);
+      const trainsDb = await takeDbFromFile(trainDbPath);
 
       res
         .status(200)
-        .json({ message: "All trains are downloaded", trains: trainDbData });
+        .json({ message: "All trains are downloaded", trains: trainsDb });
     } catch (e) {
       res.status(500).json({ message: "Something wrong, sorry" });
     }
@@ -59,13 +54,10 @@ trainRouter
       const newTrainData = req.body.train;
       const idToUpdate = req.params.id;
       //take train db
-      const trainsDbFile = await fsPromises.readFile(trainDbPath, "utf-8");
-
-      //parse to readable data array
-      const trainDbData: TrainPayload[] = JSON.parse(trainsDbFile);
+      const trainsDb = await takeDbFromFile(trainDbPath);
 
       //find a train and update array
-      const updatedDbTrainsArray = trainDbData.map((train) => {
+      const updatedDbTrainsArray = trainsDb.map((train) => {
         if (train.id === idToUpdate) {
           // update drain if has matched id
           const updatedTrain: TrainPayload = {
@@ -101,14 +93,11 @@ trainRouter
       let deletedItem = null;
 
       //take train db
-      const trainsDbFile = await fsPromises.readFile(trainDbPath, "utf-8");
-
-      //parse to readable data array
-      const trainDbData: TrainPayload[] = JSON.parse(trainsDbFile);
+      const trainsDb = await takeDbFromFile(trainDbPath);
 
       //find a train and delete it, return new array and deleted train
 
-      const updatedDbTrainsArray = trainDbData.filter((train) => {
+      const updatedDbTrainsArray = trainsDb.filter((train) => {
         if (train.id !== idToDelete) {
           return true; // eturning true for elements witch are not deleted
         } else {
